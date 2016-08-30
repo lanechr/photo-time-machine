@@ -41,7 +41,14 @@
     <!-- Map -->
     <div id="map" class="map"></div>
     <div id="mapblocker"></div>
-
+    
+    <!--Tutorial-->
+    <div id="tuteoverlay">
+        <h1>Welcome to Photo Time Machine!</h1>
+        <button class="overlaycross" onclick="closeTuteOverlay()">&#735;</button>
+    </div>
+    
+    <!--Photo Overlay-->
     <div id="photooverlay">
         <div id="overlaybanner">
             <button class="overlaycross" onclick="closePhotoOverlay()">&#735;</button>

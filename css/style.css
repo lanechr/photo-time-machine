@@ -50,6 +50,18 @@ a:active {
     overflow: hidden;
 }
 
+#tuteoverlay {
+    position: absolute;
+    height: 75vh;
+    width: 90vw;
+    left: 5vw;
+    background: lightgrey;
+    border-radius: 5px;
+    z-index: 1000;
+    top: 12.5vh;
+    overflow: hidden;
+}
+
 .overlaycross {
     background: none;
     position: absolute;
@@ -95,7 +107,6 @@ a:active {
     height: 100%;
     bottom: 0;
     z-index: 2;
-    display: none;
 }
 
 

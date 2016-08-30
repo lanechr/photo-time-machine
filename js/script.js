@@ -17,7 +17,17 @@ window.setInterval(function () {
 
 $(document).ready(initMap);
 
+function pageLoaded() {
+    if (document.cookie.indexOf("has_visited") >= 0) {
+        $("#tuteoverlay").hide();
+        $("#mapblocker").hide();
+    } else {
+        document.cookie = "has_visited=anonymous; expires=Thu, 18 Dec 2100 12:00:00 UTC";
+    }
+}
+
 function initMap() {
+    pageLoaded();
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -54,7 +64,7 @@ function initMap() {
             geocodeLatLng(GEOCODER, map);
             $("#mapblocker").show();
             $("#photooverlay").show();
-            
+
         });
     }
 
@@ -199,6 +209,11 @@ function closePhotoOverlay() {
     //Purges data from output div
     $("#output").empty();
     $("#overlaytitle").remove();
+}
+
+function closeTuteOverlay() {
+    $("#tuteoverlay").hide();
+    $("#mapblocker").hide();
 }
 
 //====================================================//
@@ -360,7 +375,7 @@ function geocodeCompletion(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
     var coords = new google.maps.LatLng(latitude, longitude);
-    
+
     GEOCODER.geocode({
         'location': coords
     }, function (results, status) {
@@ -380,4 +395,3 @@ function geocodeCompletion(position) {
         }
     });
 }
-
