@@ -383,7 +383,14 @@ function geocodeCompletion(position) {
             if (results[1]) {
                 var locale = results[1].formatted_address;
                 var process = locale.split(" ");
-                var suburb = process[0];
+                if (process.length == 3){
+                    var suburb = process[0];
+                }else{
+                    var suburb = "";
+                    for (var i = 0; i < (process.length - 3); i++) {
+                        suburb += process[i] + " ";
+                    }
+                }
                 SUBURB = suburb;
                 // Seems to only show results sometimes
                 searchTrove(suburb);
