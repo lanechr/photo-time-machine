@@ -40,7 +40,7 @@
 
     <!-- Map -->
     <div id="map" class="map"></div>
-    <div id="mapblocker"></div>
+    <div id="mapblocker" onclick="mapBlockerClicked()"></div>
     
     <!--Tutorial-->
     <div id="tuteoverlay">
