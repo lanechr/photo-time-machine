@@ -14,7 +14,7 @@ html {
     opacity: 0.85;
     position: fixed;
     width: 100vw;
-    z-index: 100;
+    z-index: 2;
     color: black;
     background: white;
     text-decoration: none;
@@ -66,7 +66,7 @@ a:active {
     background: none;
     position: absolute;
     top: 0;
-    left: 0;
+    left: 7.5px;
     padding: 0px 10px 0px 10px;
     color: #000;
     border: 0;
@@ -80,7 +80,7 @@ a:active {
 #trovecredit {
     background: none;
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 0;
     padding: 10px 10px 10px 10px;
     color: #000;
@@ -93,11 +93,13 @@ a:active {
 }
 
 #overlaybanner {
-    height: 2.5vh;
+    height: 3vh;
 }
 
 #output {
-    height: 70vh;
+    position: relative;
+    top: 3vh;
+    height: 65vh;
     overflow: scroll;
 }
 
