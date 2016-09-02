@@ -414,3 +414,6 @@ function mapBlockerClicked(){
 function nothingFound(){
     $("#output").append("<br><br>Sorry, we couldn't find anything for your current location.<br>Try moving around then giving it another go!");
 };
+
+
+//pointless comment
