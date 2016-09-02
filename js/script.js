@@ -222,6 +222,7 @@ function closeTuteOverlay() {
 //====================================================//
 
 var loadedImages = [];
+var loadedTitles = [];
 var urlPatterns = ["flickr.com", "nla.gov.au", "artsearch.nga.gov.au", "recordsearch.naa.gov.au", "images.slsa.sa.gov.au"];
 var found = 0;
 
@@ -242,6 +243,7 @@ function searchTrove(suburb) {
     //event.preventDefault();
 
     loadedImages = [];
+    loadedTitles = [];
     found = 0;
     //get input values
     var searchTerm = suburb;
@@ -272,6 +274,8 @@ function searchTrove(suburb) {
  */
 function processImages(index, troveItem) {
     var imgUrl = troveItem.identifier[0].value;
+    var imgTitle = troveItem.title;
+    //alert(imgTitle);
     if (imgUrl.indexOf(urlPatterns[0]) >= 0) { // flickr
         found++;
         addFlickrItem(imgUrl, troveItem);
@@ -281,11 +285,17 @@ function processImages(index, troveItem) {
         loadedImages.push(
             imgUrl + "/representativeImage?wid=900" // change ?wid=900 to scale the image
         );
+        loadedTitles.push(
+            imgTitle
+        );
 
     } else if (imgUrl.indexOf(urlPatterns[2]) >= 0) { //artsearch
         found++;
         loadedImages.push(
             "http://artsearch.nga.gov.au/IMAGES/LRG/" + getQueryVariable("IRN", imgUrl) + ".jpg"
+        );
+        loadedTitles.push(
+            imgTitle
         );
 
     } else if (imgUrl.indexOf(urlPatterns[3]) >= 0) { //recordsearch
@@ -293,11 +303,17 @@ function processImages(index, troveItem) {
         loadedImages.push(
             "http://recordsearch.naa.gov.au/NAAMedia/ShowImage.asp?T=P&S=1&B=" + getQueryVariable("Number", imgUrl)
         );
+        loadedTitles.push(
+            imgTitle
+        );
 
     } else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa 
         found++;
         loadedImages.push(
             imgUrl.slice(0, imgUrl.length - 3) + "jpg"
+        );
+        loadedTitles.push(
+            imgTitle
         );
 
     } else { // Could not reliably load image for item
@@ -335,7 +351,7 @@ function printImages() {
         anchor.id = "image" + i;
         anchor.href = loadedImages[i].toString();
         anchor.setAttribute("data-lightbox", "example-set");
-        anchor.setAttribute("data-title", SUBURB + " " + count);
+        anchor.setAttribute("data-title", loadedTitles[i]);
         anchor.setAttribute("alt", "");
         $("#output").append(anchor);
         var image = new Image();
