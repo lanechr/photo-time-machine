@@ -58,7 +58,7 @@ function initMap() {
         USERLOCMARKER = new google.maps.Marker({
             position: coords
             , map: map
-            , title: 'Pickup Location'
+            , title: 'Your Location'
         });
         USERLOCMARKER.addListener('click', function () {
             geocodeLatLng(GEOCODER, map);
@@ -412,5 +412,5 @@ function mapBlockerClicked(){
 }
 
 function nothingFound(){
-    $("#output").append("Sorry, we couldn't find anything for your current location. Try moving around then giving it another go!");
+    $("#output").append("<br><br>Sorry, we couldn't find anything for your current location.<br>Try moving around then giving it another go!");
 };
