@@ -60,7 +60,6 @@
     </div>
 
     <script src="lightbox2-master/dist/js/lightbox.js"></script>
-    <!--pointless comment-->
 </body>
 
 </html>
