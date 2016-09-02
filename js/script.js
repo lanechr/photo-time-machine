@@ -227,6 +227,9 @@ var found = 0;
 
 
 function waitForFlickr() {
+    if (found == 0){
+        nothingFound();
+    }
     if (found == loadedImages.length) {
         printImages();
     } else {
@@ -407,3 +410,7 @@ function mapBlockerClicked(){
     closePhotoOverlay();
     $("#tuteoverlay").hide();
 }
+
+function nothingFound(){
+    $("#output").append("Sorry, we couldn't find anything for your current location. Try moving around then giving it another go!");
+};
