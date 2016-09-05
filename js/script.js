@@ -1,35 +1,35 @@
-// A majority of the implementation of Google Maps, relied upon
-// Google's API information, as pressented on their website:
-// https://developers.google.com/maps/documentation/javascript/tutorialS
+// A large portion of the maps implementation was adapted from code found within the Google API resources
+//Small sections of code were pulled from a previous assignment CaPool By Christopher Lane Lane, Mitchell Woods and Freya Rogers, however these peices of code are purely functional and 
+
 var USERLOCMARKER;
 var GEOCODER;
 var SUBURB;
 var i = 0;
-// Used help from the below site for the cycling through of divs
-// Other ways to do this were known, but this method was more
-// efficient and succinct:
-// http://stackoverflow.com/questions/6003060/cycle-through-divs
 
-
+//Update user loaction every 5 seconds
 window.setInterval(function () {
     updateUserLocation();
 }, 5000);
 
+//On load creat map
 $(document).ready(initMap);
 
+//Function to check user cookies
 function pageLoaded() {
+    //Visitor has been there before
     if (document.cookie.indexOf("has_visited") >= 0) {
         $("#tuteoverlay").hide();
         $("#mapblocker").hide();
+        //Hasn't visited before
     } else {
         document.cookie = "has_visited=anonymous; expires=Thu, 18 Dec 2100 12:00:00 UTC";
     }
 }
 
+//Map creation
 function initMap() {
     pageLoaded();
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+    //Create the map
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13
         , streetViewControl: false
@@ -40,40 +40,48 @@ function initMap() {
         }
     });
 
+    //Creates a geocoder
     GEOCODER = new google.maps.Geocoder;
 
+    //Check whether geolocation is possible
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(userPinInit, errorFunc);
         navigator.geolocation.getCurrentPosition(getPositionForCentre, errorFunc);
+        //Not possible
     } else {
         alert("Your browser does not support Location Services!")
     }
 
 
-
+    //Create User Pin
     function userPinInit(position) {
+        //Get user location
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
         var coords = new google.maps.LatLng(latitude, longitude);
-        
+
+        //Message Box
         var contentString = "Click Me!";
-        
+
         var infowindow = new google.maps.InfoWindow({
-          content: contentString
+            content: contentString
         });
-        
+
+        //Create Global Marker
         USERLOCMARKER = new google.maps.Marker({
             position: coords
             , map: map
             , title: 'Click Me!'
         });
+
+        //Make marker open overlay and search Trove when clicked
         USERLOCMARKER.addListener('click', function () {
             geocodeLatLng(GEOCODER, map);
             $("#mapblocker").show();
             $("#photooverlay").show();
 
         });
-        
+
         infowindow.open(map, USERLOCMARKER);
     }
 
@@ -83,25 +91,32 @@ function initMap() {
     var centerControl = new CenterControl(centerControlDiv, map);
 
     centerControlDiv.index = 1;
+
+
+
+    //Place Centre control on map
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 
-
+    
+    //Find User location
     function getPositionForCentre(position) {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
         var coords = new google.maps.LatLng(latitude, longitude);
         centreMapOnUser(latitude, longitude);
     }
-
+    
+    //Find User Location
     function centreMapOnUser(userLat, userLong) {
         var userLat = userLat;
         var userLong = userLong;
         var coords = new google.maps.LatLng(userLat, userLong);
         map.panTo(coords);
 
-    
-    }
 
+    }
+    
+    //Catch Map Errors
     function errorFunc(error) {
         switch (error.code) {
         case error.PERMISSION_DENIED:
@@ -170,12 +185,12 @@ function initMap() {
 }
 
 
-
+// Move pin to user location
 function updateUserLocation() {
     navigator.geolocation.getCurrentPosition(userPinUpdate, errorFunc1);
 }
 
-
+// move pin to user location
 function userPinUpdate(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
@@ -183,7 +198,7 @@ function userPinUpdate(position) {
     USERLOCMARKER.setPosition(coords);
 }
 
-
+//Catch Map errors
 function errorFunc1(error) {
     switch (error.code) {
     case error.PERMISSION_DENIED:
@@ -204,6 +219,7 @@ function errorFunc1(error) {
     }
 }
 
+//Hides the photo overlay and destroys downloaded Trove Content
 function closePhotoOverlay() {
     $("#photooverlay").hide();
     $("#mapblocker").hide();
@@ -212,6 +228,7 @@ function closePhotoOverlay() {
     $("#overlaytitle").remove();
 }
 
+//Closes the tutorial overlay
 function closeTuteOverlay() {
     $("#tuteoverlay").hide();
     $("#mapblocker").hide();
@@ -224,12 +241,12 @@ function closeTuteOverlay() {
 
 var loadedImages = [];
 var loadedTitles = [];
-var urlPatterns = ["flickr.com", "nla.gov.au", "artsearch.nga.gov.au", "recordsearch.naa.gov.au", "images.slsa.sa.gov.au"];
+var urlPatterns = ["flickr.com", "nla.gov.au", "artsearch.nga.gov.au", "recordsearch.naa.gov.au", "images.slsa.sa.gov.au", ".jpg", ".png"];
 var found = 0;
 
 
 function waitForFlickr() {
-    if (found == 0){
+    if (found == 0) {
         nothingFound();
     }
     if (found == loadedImages.length) {
@@ -317,9 +334,27 @@ function processImages(index, troveItem) {
             imgTitle
         );
 
+    } else if (imgUrl.indexOf(urlPatterns[5]) >= 0) { //direct jpg link 
+        found++;
+        loadedImages.push(
+            imgUrl
+        );
+        loadedTitles.push(
+            imgTitle
+        );
+
+    } else if (imgUrl.indexOf(urlPatterns[6]) >= 0) { //direct png link
+        found++;
+        loadedImages.push(
+            imgUrl
+        );
+        loadedTitles.push(
+            imgTitle
+        );
+
     } else { // Could not reliably load image for item
         // UNCOMMENT FOR DEBUG: 
-        // console.log("Not available: " + imgUrl);
+        console.log("Not available: " + imgUrl);
     }
 }
 
@@ -348,6 +383,7 @@ function printImages() {
     // Print out all images
     var count = 1;
     for (var i in loadedImages) {
+        //Create anchor tag to implement lightbox
         var anchor = document.createElement('a');
         anchor.id = "image" + i;
         anchor.href = loadedImages[i].toString();
@@ -391,6 +427,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
     navigator.geolocation.getCurrentPosition(geocodeCompletion, errorFunc1);
 }
 
+//Once geocoding is complete format the result and search trove
 function geocodeCompletion(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
@@ -403,9 +440,9 @@ function geocodeCompletion(position) {
             if (results[1]) {
                 var locale = results[1].formatted_address;
                 var process = locale.split(" ");
-                if (process.length == 3){
+                if (process.length == 3) {
                     var suburb = process[0];
-                }else{
+                } else {
                     var suburb = "";
                     for (var i = 0; i < (process.length - 3); i++) {
                         suburb += process[i] + " ";
@@ -423,12 +460,13 @@ function geocodeCompletion(position) {
     });
 }
 
-function mapBlockerClicked(){
+//Make it so that when map blocker is clicked, any overlays are hidden
+function mapBlockerClicked() {
     closePhotoOverlay();
     $("#tuteoverlay").hide();
 }
 
-function nothingFound(){
+//Error message fo when Trove finds no usable results
+function nothingFound() {
     $("#output").append("<br><br>Sorry, we couldn't find anything for your current location.<br>Try moving around then giving it another go!");
 };
-
