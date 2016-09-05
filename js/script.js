@@ -55,10 +55,17 @@ function initMap() {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
         var coords = new google.maps.LatLng(latitude, longitude);
+        
+        var contentString = "Click Me!";
+        
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+        
         USERLOCMARKER = new google.maps.Marker({
             position: coords
             , map: map
-            , title: 'Your Location'
+            , title: 'Click Me!'
         });
         USERLOCMARKER.addListener('click', function () {
             geocodeLatLng(GEOCODER, map);
@@ -66,6 +73,8 @@ function initMap() {
             $("#photooverlay").show();
 
         });
+        
+        infowindow.open(map, USERLOCMARKER);
     }
 
     // Create the DIV to hold the control and call the CenterControl()
@@ -88,17 +97,9 @@ function initMap() {
         var userLat = userLat;
         var userLong = userLong;
         var coords = new google.maps.LatLng(userLat, userLong);
-        //    map = new google.maps.Map(document.getElementById('map'), {
-        //        zoom: 13, 
-        //        center: {lat: userLat, lng: userLong
-        //                }});
         map.panTo(coords);
 
-        //    var marker = new google.maps.Marker({
-        //                        position: coords,
-        //                        map: map,
-        //                        title: 'Pickup Location'
-        //                    });
+    
     }
 
     function errorFunc(error) {
@@ -431,5 +432,3 @@ function nothingFound(){
     $("#output").append("<br><br>Sorry, we couldn't find anything for your current location.<br>Try moving around then giving it another go!");
 };
 
-
-//pointless comment
