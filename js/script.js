@@ -1,5 +1,5 @@
 // A large portion of the maps implementation was adapted from code found within the Google API resources
-//Small sections of code were pulled from a previous assignment CaPool By Christopher Lane Lane, Mitchell Woods and Freya Rogers, however these peices of code are purely functional and 
+//Small sections of code were pulled from a previous assignment CaPool By Christopher Lane Lane, Mitchell Woods and Freya Rogers, however these pieces of code are purely functional and 
 
 var USERLOCMARKER;
 var GEOCODER;
@@ -16,6 +16,9 @@ $(document).ready(initMap);
 
 //Function to check user cookies
 function pageLoaded() {
+    if (navigator.appVersion.includes("Chrome")){
+        alert("It seems you're using Chrome, due to Google's focus on security and Trove's anti-security stance this website is not currently supported. Try opening the site in a different, less RAM hungry browser");
+    };
     //Visitor has been there before
     if (document.cookie.indexOf("has_visited") >= 0) {
         $("#tuteoverlay").hide();
