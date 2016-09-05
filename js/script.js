@@ -6,10 +6,10 @@ var GEOCODER;
 var SUBURB;
 var i = 0;
 
-//Update user loaction every 5 seconds
+//Update user loaction every minute
 window.setInterval(function () {
     updateUserLocation();
-}, 5000);
+}, 60000);
 
 //On load creat map
 $(document).ready(initMap);
