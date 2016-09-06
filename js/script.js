@@ -69,23 +69,15 @@ function initMap() {
         var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
-
+        
+        //The icon for this pin was found at https://t3.ftcdn.net/jpg/00/81/47/44/160_F_81474483_o4dKoLrn5GHY75SZVBomhz6K5cGoQdi4.jpg
         var image = {
-            url: 'images/hourglasspin.png'
-            , // This marker is 20 pixels wide by 32 pixels high.
-            size: new google.maps.Size(50, 50)
-            , // The origin for this image is (0, 0).
-            origin: new google.maps.Point(0, 0)
-            , // The anchor for this image is the base of the flagpole at (0, 32).
+            url: 'images/hourglasspin.png',
+            size: new google.maps.Size(50, 50),
+            origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(0, 0)
         };
-        // Shapes define the clickable region of the icon. The type defines an HTML
-        // <area> element 'poly' which traces out a polygon as a series of X,Y points.
-        // The final coordinate closes the poly by connecting to the first coordinate.
-        var shape = {
-            coords: [1, 1, 1, 20, 18, 20, 18, 1]
-            , type: 'poly'
-        };
+        
         //Create Global Marker
         USERLOCMARKER = new google.maps.Marker({
             position: coords
