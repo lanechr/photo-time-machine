@@ -16,7 +16,7 @@ $(document).ready(initMap);
 
 //Function to check user cookies
 function pageLoaded() {
-    if (navigator.appVersion.includes("Chrome")){
+    if (navigator.appVersion.includes("Chrome")) {
         alert("It seems you're using Chrome, due to Google's focus on security and Trove's anti-security stance this website is not currently supported. Try opening the site in a different, less RAM hungry browser");
     };
     //Visitor has been there before
@@ -70,11 +70,28 @@ function initMap() {
             content: contentString
         });
 
+        var image = {
+            url: 'images/hourglasspin.png'
+            , // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(50, 50)
+            , // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0)
+            , // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(0, 0)
+        };
+        // Shapes define the clickable region of the icon. The type defines an HTML
+        // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+        // The final coordinate closes the poly by connecting to the first coordinate.
+        var shape = {
+            coords: [1, 1, 1, 20, 18, 20, 18, 1]
+            , type: 'poly'
+        };
         //Create Global Marker
         USERLOCMARKER = new google.maps.Marker({
             position: coords
             , map: map
             , title: 'Click Me!'
+            , icon: image
         });
 
         //Make marker open overlay and search Trove when clicked
@@ -100,7 +117,7 @@ function initMap() {
     //Place Centre control on map
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 
-    
+
     //Find User location
     function getPositionForCentre(position) {
         var latitude = position.coords.latitude;
@@ -108,7 +125,7 @@ function initMap() {
         var coords = new google.maps.LatLng(latitude, longitude);
         centreMapOnUser(latitude, longitude);
     }
-    
+
     //Find User Location
     function centreMapOnUser(userLat, userLong) {
         var userLat = userLat;
@@ -118,7 +135,7 @@ function initMap() {
 
 
     }
-    
+
     //Catch Map Errors
     function errorFunc(error) {
         switch (error.code) {
