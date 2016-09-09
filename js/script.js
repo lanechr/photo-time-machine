@@ -293,15 +293,6 @@ function searchTrove(suburb) {
             waitForFlickr(); // Waits for the flickr images to load
         }
     });
-    //get the JSON information we need to display the images
-    /*$.getJSON(url, function (data) {
-        $('#output').empty();
-        console.log(data);
-        $.each(data.response.zone[0].records.work, processImages);
-        //printImages();
-
-        waitForFlickr(); // Waits for the flickr images to load
-    });*/
 };
 
 
@@ -322,7 +313,7 @@ function processImages(index, troveItem) {
     } else if (imgUrl.indexOf(urlPatterns[1]) >= 0) { // nla.gov
         found++;
         loadedImages.push(
-            imgUrl + "/representativeImage?wid=900" // change ?wid=900 to scale the image
+            "https" + imgUrl.substring(4, imgUrl.length) + "/representativeImage?wid=900" // change ?wid=900 to scale the image
         );
         loadedTitles.push(
             imgTitle
