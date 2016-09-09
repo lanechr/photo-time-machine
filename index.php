@@ -17,9 +17,9 @@
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- jQuery -->
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <!-- JavaScript -->
     <script type="text/javascript" src="js/script.js"></script>
     <!--LightBox-->
@@ -34,8 +34,8 @@
 <body>
 
     <header id="banner">
-        <a href="index.html"><h1>Photo Time Machine</h1></a>
-        <input>Search Location</input>
+        <a href="index.php"><h1>Photo Time Machine</h1></a>
+<!--        <input>Search Location</input>-->
         
     </header>
 
@@ -54,7 +54,7 @@
     <div id="photooverlay">
         <div id="overlaybanner">
             <button class="overlaycross" onclick="closePhotoOverlay()">&#735;</button>
-            <a href="http://trove.nla.gov.au/?q=">
+            <a href="">
                 <img id="trovecredit" src="images/API-light.png" alt="trovelogo">
             </a>
         </div>

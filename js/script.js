@@ -16,9 +16,6 @@ $(document).ready(initMap);
 
 //Function to check user cookies
 function pageLoaded() {
-    if (navigator.appVersion.includes("Chrome")) {
-        alert("It seems you're using Chrome, due to Google's focus on security and Trove's anti-security stance this website is not currently supported. Try opening the site in a different, less RAM hungry browser");
-    };
     //Visitor has been there before
     if (document.cookie.indexOf("has_visited") >= 0) {
         $("#tuteoverlay").hide();
@@ -69,15 +66,15 @@ function initMap() {
         var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
-        
+
         //The icon for this pin was found at https://t3.ftcdn.net/jpg/00/81/47/44/160_F_81474483_o4dKoLrn5GHY75SZVBomhz6K5cGoQdi4.jpg
         var image = {
-            url: 'images/hourglasspin.png',
-            size: new google.maps.Size(50, 50),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(25, 50)
+            url: 'images/hourglasspin.png'
+            , size: new google.maps.Size(50, 50)
+            , origin: new google.maps.Point(0, 0)
+            , anchor: new google.maps.Point(25, 50)
         };
-        
+
         //Create Global Marker
         USERLOCMARKER = new google.maps.Marker({
             position: coords
@@ -271,28 +268,40 @@ function waitForFlickr() {
 
 function searchTrove(suburb) {
     //event.preventDefault();
-
+    $("#overlaytitle").remove();
     loadedImages = [];
     loadedTitles = [];
     found = 0;
     //get input values
     var searchTerm = suburb;
     searchTerm = searchTerm.replace(/ /g, "%20");
-    var sortBy = $("#sortBy").val();
-    var apiKey = "agc0amct3i6c04ei";
+    searchStr = "searchTerm=" + searchTerm;
 
-    //create searh query
-    var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + searchTerm + "&callback=?";
+    $.ajax({
+        type: "POST"
+        , url: "contacttrove.php"
+        , data: searchStr
+        , success: function (results) {
+            //alert(results);
+            $('#output').empty();
+            var str = results.substring(2, results.length-1);
+            //hromalert(str);
+            var JSONresponse = JSON.parse(str);
+            console.log(JSONresponse);
+            $.each(JSONresponse.response.zone[0].records.work, processImages);
 
+            waitForFlickr(); // Waits for the flickr images to load
+        }
+    });
     //get the JSON information we need to display the images
-    $.getJSON(url, function (data) {
+    /*$.getJSON(url, function (data) {
         $('#output').empty();
         console.log(data);
         $.each(data.response.zone[0].records.work, processImages);
         //printImages();
 
         waitForFlickr(); // Waits for the flickr images to load
-    });
+    });*/
 };
 
 
@@ -319,7 +328,7 @@ function processImages(index, troveItem) {
             imgTitle
         );
 
-    } else if (imgUrl.indexOf(urlPatterns[2]) >= 0) { //artsearch
+    } /*else if (imgUrl.indexOf(urlPatterns[2]) >= 0) { //artsearch
         found++;
         loadedImages.push(
             "http://artsearch.nga.gov.au/IMAGES/LRG/" + getQueryVariable("IRN", imgUrl) + ".jpg"
@@ -337,7 +346,7 @@ function processImages(index, troveItem) {
             imgTitle
         );
 
-    } else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa 
+    }*/ else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa 
         found++;
         loadedImages.push(
             imgUrl.slice(0, imgUrl.length - 3) + "jpg"
@@ -460,9 +469,12 @@ function geocodeCompletion(position) {
                         suburb += process[i] + " ";
                     }
                 }
-                SUBURB = suburb;
-                // Seems to only show results sometimes
-                searchTrove(suburb);
+                var newSuburb = suburb.split(",");
+                var num = newSuburb.length - 1;
+                newSuburb = newSuburb[num];
+                newSuburb = newSuburb.trim();
+                SUBURB = newSuburb;
+                searchTrove(newSuburb);
             } else {
                 window.alert('No results found');
             }
