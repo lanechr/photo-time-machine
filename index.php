@@ -39,8 +39,9 @@ session_start();
     <body>
 
         <header id="banner">
-            <a href="index.html"><h1>Photo Time Machine</h1></a>
+            <a href="index.php"><h1>Photo Time Machine</h1></a>
             <!--        <input>Search Location</input>-->
+            <div id="logoutbuttonholder"><button id="logoutbutton" onclick="userLogout()">Log Out</button></div>
 
         </header>
 
@@ -52,12 +53,13 @@ session_start();
         <!-- Log In -->
         <?php
             if (isset($_SESSION['auth'])) {
-                echo "<script>hideLoginOverlay();</script>";
+                echo "<script>LOGGEDIN = true;</script>";
             }
         ?>
             <div id="loginoverlay">
                 <h1>Welcome to Photo Time Machine! Please Login</h1>
                 <br>
+                <div id="loginerrordiv"></div><br>
                 Username: <input id="usernameinput" type="text" name="username">
                 <br>
                 Password: <input id="passwordinput" type="password" name="password">
@@ -72,6 +74,7 @@ session_start();
             <div id="signupoverlay">
                 <h1>Welcome to Photo Time Machine! Please signup</h1>
                 <br>
+                <div id="signuperrordiv"></div><br>
                 Username: <input id="usernamesignupinput" type="text" name="username">
                 <br>
                 Password: <input id="passwordsignupinput" type="password" name="password">
@@ -91,7 +94,8 @@ session_start();
             <div id="photooverlay">
                 <div id="overlaybanner">
                     <button class="overlaycross" onclick="closePhotoOverlay()">&#735;</button>
-                    <a href="">
+                    <div id="locationbuttonholder"><button onclick="saveCurrentLocation()">Save Location</button></div>
+                    <a href="http://trove.nla.gov.au">
                         <img id="trovecredit" src="images/API-light.png" alt="trovelogo">
                     </a>
                 </div>

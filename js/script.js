@@ -4,6 +4,7 @@ var USERLOCMARKER;
 var GEOCODER;
 var SUBURB;
 var i = 0;
+var LOGGEDIN = false;
 //Update user loaction every minute
 window.setInterval(function () {
     updateUserLocation();
@@ -13,6 +14,11 @@ $(document).ready(initMap);
 //Function to check user cookies
 function pageLoaded() {
     $("#signupoverlay").hide();
+    if (LOGGEDIN == true){
+        loginComplete();
+    } else {
+        $('#logoutbuttonholder').hide();
+    }
     //Visitor has been there before
     if (document.cookie.indexOf("has_visited") >= 0) {
         $("#tuteoverlay").hide();
@@ -415,8 +421,20 @@ function userLogin() {
             , password: pword
         }
         , success: function (results) {
-            if (results == 1) {
+            //Response Codes: 1=Success, 2=No Input, 3=Database Connection failed, 4=Incorrect Username or Password
+            switch (results) {
+            case "1":
                 loginComplete();
+                break;
+            case "2":
+                $('#loginerrordiv').html("Please enter your Username and Password");
+                break;
+            case "3":
+                $('#loginerrordiv').html("Internal Server Error, Try again later...");
+                break;
+            case "4":
+                $('#loginerrordiv').html("Incorrect Username or Password");
+                break;
             }
         }
     });
@@ -433,9 +451,25 @@ function userSignUp() {
             , password: pword
         }
         , success: function (results) {
-            if (results == 1) {
+            //Response Codes: 1=Success, 2=No Input, 3=Database Connection failed, 4=Username Already Exists
+            switch (results) {
+            case "1":
                 loginComplete();
+                break;
+            case "2":
+                $('#signuperrordiv').html("Please enter a Username and Password");
+                break;
+            case "3":
+                $('#signuperrordiv').html("Internal Server Error, Try again later...");
+                break;
+            case "4":
+                $('#signuperrordiv').html("Username already Exists");
+                break;
+            case "5":
+                $('#signuperrordiv').html("Unknown Error. Try again later.");
+                break;
             }
+            
         }
     });
 }
@@ -454,4 +488,27 @@ function loginComplete() {
     $("#loginoverlay").hide();
     $("#signupoverlay").hide();
     $("#mapblocker").hide();
+    $('#logoutbuttonholder').show();
+}
+
+function userLogout(){
+    showLogin();
+    $('#logoutbuttonholder').hide();
+    $.ajax({
+        type: "POST"
+        , url: "logout.php"
+    });
+}
+
+function saveCurrentLocation(){
+    $.ajax({
+        type: "POST"
+        , url: "addfavouritelocation.php"
+        , data: {
+            location: SUBURB
+        }
+        , success: function (results) {
+            alert("Location Added!");
+        }
+    });
 }

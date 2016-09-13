@@ -16,7 +16,7 @@ if ($username == "" || $password == ""){
 
     $link = new mysqli($host, $dbuser, $pw, $db);
     if ($link->connect_errno) {
-        echo "Failed to connect to MySQL: (" . $link->connect_errno . ") " . $link->connect_error;
+        echo 3;
     }
 
     // SQL Injection Protection
@@ -31,21 +31,27 @@ if ($username == "" || $password == ""){
 
     if (mysqli_num_rows($result) == 1) {
         //User Exists
-        echo 2;
+        echo 4;
     } else {
         
         //User Doesn't Exist (Proceed)
         // Query
         $sql = "INSERT INTO users (username, password)
         VALUES ('$username', '$password')";
-
+        
+        $sql="SELECT userid FROM users WHERE username='$username'";
+            $result=mysqli_query($link, $sql);
+            $id=array();
+            while ($row = mysqli_fetch_row($result)) $id[]=$row[0];
+            mysqli_free_result($result);
+            $_SESSION['userID'] = $id[0];
 
         if (mysqli_query($link, $sql)) {
             echo 1;
             $_SESSION['auth'] = 1;
             
         } else {
-            echo 2;
+            echo 5;
         }
     }
 

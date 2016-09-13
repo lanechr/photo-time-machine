@@ -4,7 +4,8 @@ $username = $_REQUEST['username'];
 $password = $_REQUEST['password'];
 if ($username == "" || $password == ""){
     echo 2;
-} else{
+    exit;
+} else {
     //Connect to database
     $db= "309";
     $host= "localhost";
@@ -13,7 +14,7 @@ if ($username == "" || $password == ""){
 
     $link = new mysqli($host, $dbuser, $pw, $db);
     if ($link->connect_errno) {
-        echo "Failed to connect to MySQL: (" . $link->connect_errno . ") " . $link->connect_error;
+        echo 3;
     }
 
     // SQL Injection Protection
@@ -37,7 +38,7 @@ if ($username == "" || $password == ""){
         $_SESSION['userID'] = $id[0];
             echo 1;
     } else {
-        echo 2;
+        echo 4;
     }
 }
 
