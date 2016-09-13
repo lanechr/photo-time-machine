@@ -10,6 +10,7 @@ var MARKERS = [];
 var CURTOGGLE = "user";
 var THISSUBURB;
 var GEOITERATOR = 0;
+var EVENTSLOADED = false;
 //Update user loaction every minute
 window.setInterval(function () {
     updateUserLocation();
@@ -18,6 +19,7 @@ window.setInterval(function () {
 $(document).ready(initMap);
 //Function to check user cookies
 function pageLoaded() {
+    loadFavourites();
     $("#tuteoverlay").hide();
     $("#mapblocker").hide();
     $("#signupoverlay").hide();
@@ -234,7 +236,6 @@ function waitForFlickr() {
 }
 
 function searchTrove(suburb) {
-    alert(suburb);
     SUBURB = toTitleCase(suburb);
     //event.preventDefault();
     $("#overlaytitle").remove();
@@ -540,8 +541,7 @@ function toTitleCase(str) {
     });
 }
 
-function showFavourites() {
-    map.setZoom(10);
+function loadFavourites() {
     $.ajax({
         type: "POST"
         , url: "getlocations.php"
@@ -558,6 +558,7 @@ function showFavourites() {
                         var marker = new google.maps.Marker({
                             map: map
                             , position: results[0].geometry.location
+                            , visible: false
                         });
                         MARKERS.push(marker);
                     }
@@ -572,38 +573,47 @@ function showFavourites() {
 //The following code is directly from Google API support
 //Found at https://developers.google.com/maps/documentation/javascript/examples/marker-remove
 // Sets the map on all markers in the array.
-function setMapOnAll(map) {
+function showFavs(map) {
     for (var i = 0; i < MARKERS.length; i++) {
-        MARKERS[i].setMap(map);
+        MARKERS[i].setVisible(true);
     }
 }
-// Removes the markers from the map, but keeps them in the array.
-function clearMarkers() {
-    setMapOnAll(null);
-}
-// Shows any markers currently in the array.
-function showMarkers() {
-    setMapOnAll(map);
-}
-// Deletes all markers in the array by removing references to them.
-function deleteMarkers() {
-    clearMarkers();
-    MARKERS = [];
+
+function hideFavs(map) {
+    for (var i = 0; i < MARKERS.length; i++) {
+        MARKERS[i].setVisible(false);
+    }
 }
 
 function toggleMarkers() {
     if (CURTOGGLE == "user") {
         USERLOCMARKER.setVisible(false);
-        showFavourites();
+        if (!(EVENTSLOADED)){
+            makeMarkersClckable();
+        }
+        showFavs();
         CURTOGGLE = "favourites"
         $('#togglebutton').html("Show My Location");
     }
     else {
-        deleteMarkers();
         USERLOCMARKER.setVisible(true);
+        hideFavs();
         CURTOGGLE = "user";
         $('#togglebutton').html("Show Favourites");
         GEOITERATOR = 0;
     }
 }
 
+function makeMarkersClckable() {
+    for (var i = 0; i < MARKERS.length; i++) {
+        MARKERS[i].addListener('click', function () {
+            for (var j = 0; j < MARKERS.length; j++) {
+                if (this == MARKERS[j]){
+                    searchTrove(SUBURBS[j]);
+                    $("#mapblocker").show();
+                    $("#photooverlay").show();
+                }
+            }
+        });
+    }
+}
