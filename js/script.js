@@ -5,6 +5,11 @@ var GEOCODER;
 var SUBURB;
 var i = 0;
 var LOGGEDIN = false;
+var map;
+var MARKERS = [];
+var CURTOGGLE = "user";
+var THISSUBURB;
+var GEOITERATOR = 0;
 //Update user loaction every minute
 window.setInterval(function () {
     updateUserLocation();
@@ -13,27 +18,22 @@ window.setInterval(function () {
 $(document).ready(initMap);
 //Function to check user cookies
 function pageLoaded() {
+    $("#tuteoverlay").hide();
+    $("#mapblocker").hide();
     $("#signupoverlay").hide();
-    if (LOGGEDIN == true){
+    if (LOGGEDIN == true) {
         loginComplete();
-    } else {
-        $('#logoutbuttonholder').hide();
-    }
-    //Visitor has been there before
-    if (document.cookie.indexOf("has_visited") >= 0) {
-        $("#tuteoverlay").hide();
-        $("#mapblocker").hide();
-        //Hasn't visited before
     }
     else {
-        document.cookie = "has_visited=anonymous; expires=Thu, 18 Dec 2100 12:00:00 UTC";
+        $("#loginmapblocker").show();
+        $('#logoutbuttonholder').hide();
     }
 }
 //Map creation
 function initMap() {
     pageLoaded();
     //Create the map
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13
         , streetViewControl: false
         , mapTypeControl: false
@@ -60,10 +60,10 @@ function initMap() {
         var longitude = position.coords.longitude;
         var coords = new google.maps.LatLng(latitude, longitude);
         //Message Box
-        var contentString = "Click Me!";
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
+        //        var contentString = "Click Me!";
+        //        var infowindow = new google.maps.InfoWindow({
+        //            content: contentString
+        //        });
         //The icon for this pin was found at https://t3.ftcdn.net/jpg/00/81/47/44/160_F_81474483_o4dKoLrn5GHY75SZVBomhz6K5cGoQdi4.jpg
         var image = {
             url: 'images/hourglasspin.png'
@@ -84,7 +84,7 @@ function initMap() {
             $("#mapblocker").show();
             $("#photooverlay").show();
         });
-        infowindow.open(map, USERLOCMARKER);
+        //        infowindow.open(map, USERLOCMARKER);
     }
     // Create the DIV to hold the control and call the CenterControl()
     // constructor passing in this DIV.
@@ -234,6 +234,8 @@ function waitForFlickr() {
 }
 
 function searchTrove(suburb) {
+    alert(suburb);
+    SUBURB = toTitleCase(suburb);
     //event.preventDefault();
     $("#overlaytitle").remove();
     loadedImages = [];
@@ -350,7 +352,7 @@ function getQueryVariable(variable, url) {
 //This code was adapted from code found on the Google API portal//
 // https://developers.google.com/maps/documentation/javascript/examples/geocoding-reverse //
 //====================================//
-function geocodeLatLng(geocoder, map, infowindow) {
+function geocodeLatLng(geocoder, map) {
     navigator.geolocation.getCurrentPosition(geocodeCompletion, errorFunc1);
 }
 //Once geocoding is complete format the result and search trove
@@ -378,7 +380,6 @@ function geocodeCompletion(position) {
                 var num = newSuburb.length - 1;
                 newSuburb = newSuburb[num];
                 newSuburb = newSuburb.trim();
-                SUBURB = newSuburb;
                 searchTrove(newSuburb);
             }
             else {
@@ -454,7 +455,7 @@ function userSignUp() {
             //Response Codes: 1=Success, 2=No Input, 3=Database Connection failed, 4=Username Already Exists
             switch (results) {
             case "1":
-                loginComplete();
+                signupComplete();
                 break;
             case "2":
                 $('#signuperrordiv').html("Please enter a Username and Password");
@@ -469,17 +470,18 @@ function userSignUp() {
                 $('#signuperrordiv').html("Unknown Error. Try again later.");
                 break;
             }
-            
         }
     });
 }
 
 function showSignUp() {
+    $("#loginmapblocker").show();
     $("#loginoverlay").hide();
     $("#signupoverlay").show();
 }
 
 function showLogin() {
+    $("#loginmapblocker").show();
     $("#loginoverlay").show();
     $("#signupoverlay").hide();
 }
@@ -487,11 +489,19 @@ function showLogin() {
 function loginComplete() {
     $("#loginoverlay").hide();
     $("#signupoverlay").hide();
-    $("#mapblocker").hide();
+    $("#loginmapblocker").hide();
     $('#logoutbuttonholder').show();
 }
 
-function userLogout(){
+function signupComplete() {
+    $("#loginoverlay").hide();
+    $("#signupoverlay").hide();
+    $("#loginmapblocker").hide();
+    $('#logoutbuttonholder').show();
+    $("#tuteoverlay").show();
+}
+
+function userLogout() {
     showLogin();
     $('#logoutbuttonholder').hide();
     $.ajax({
@@ -500,7 +510,7 @@ function userLogout(){
     });
 }
 
-function saveCurrentLocation(){
+function saveCurrentLocation() {
     $.ajax({
         type: "POST"
         , url: "addfavouritelocation.php"
@@ -508,7 +518,92 @@ function saveCurrentLocation(){
             location: SUBURB
         }
         , success: function (results) {
-            alert("Location Added!");
+            //Response Codes: 1=Success, 2=No Input, 3=Database Connection failed
+            switch (results) {
+            case "1":
+                alert("Location Added!");
+                break;
+            case "2":
+                alert("You already added this location! Try another place!");
+                break;
+            case "3":
+                $('#loginerrordiv').html("Internal Server Error, Try again later...");
+                break;
+            }
         }
     });
 }
+//The following function was found at http://stackoverflow.com/questions/4878756/javascript-how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
+
+function showFavourites() {
+    map.setZoom(10);
+    $.ajax({
+        type: "POST"
+        , url: "getlocations.php"
+        , success: function (locations) {
+            var JSONresponse = JSON.parse(locations);
+            console.log(JSONresponse);
+            //The following code was found at http://stackoverflow.com/questions/25167596/how-to-define-multiple-locations-using-google-maps-api-to-drop-pin-for-every-pos
+            for (var i = 0; i < JSONresponse.length; i++) {
+                SUBURBS = JSONresponse;
+                GEOCODER.geocode({
+                    'address': JSONresponse[i] + " Australia"
+                }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var marker = new google.maps.Marker({
+                            map: map
+                            , position: results[0].geometry.location
+                        });
+                        MARKERS.push(marker);
+                    }
+                    else {
+                        console.log('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            }
+        }
+    });
+}
+//The following code is directly from Google API support
+//Found at https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+// Sets the map on all markers in the array.
+function setMapOnAll(map) {
+    for (var i = 0; i < MARKERS.length; i++) {
+        MARKERS[i].setMap(map);
+    }
+}
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+    setMapOnAll(null);
+}
+// Shows any markers currently in the array.
+function showMarkers() {
+    setMapOnAll(map);
+}
+// Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+    clearMarkers();
+    MARKERS = [];
+}
+
+function toggleMarkers() {
+    if (CURTOGGLE == "user") {
+        USERLOCMARKER.setVisible(false);
+        showFavourites();
+        CURTOGGLE = "favourites"
+        $('#togglebutton').html("Show My Location");
+    }
+    else {
+        deleteMarkers();
+        USERLOCMARKER.setVisible(true);
+        CURTOGGLE = "user";
+        $('#togglebutton').html("Show Favourites");
+        GEOITERATOR = 0;
+    }
+}
+

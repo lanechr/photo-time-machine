@@ -42,6 +42,7 @@ session_start();
             <a href="index.php"><h1>Photo Time Machine</h1></a>
             <!--        <input>Search Location</input>-->
             <div id="logoutbuttonholder"><button id="logoutbutton" onclick="userLogout()">Log Out</button></div>
+            <div id="togglebuttonholder"><button id="togglebutton" onclick="toggleMarkers()">Show Favourites</button></div>
 
         </header>
 
@@ -51,6 +52,7 @@ session_start();
         <div id="mapblocker" onclick="mapBlockerClicked()"></div>
 
         <!-- Log In -->
+        <div id="loginmapblocker"></div>
         <?php
             if (isset($_SESSION['auth'])) {
                 echo "<script>LOGGEDIN = true;</script>";

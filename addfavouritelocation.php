@@ -14,9 +14,19 @@ if ($link->connect_errno) {
     echo 3;
 }
 
-$sql="INSERT INTO favourites (userid, location) VALUES ('$userid', '$location')";
+$sql="SELECT * FROM favourites WHERE userid='$userid' AND location='$location'";
 
 $result=mysqli_query($link, $sql);
+
+    if (!(mysqli_num_rows($result) == 1)) {
+        $sql="INSERT INTO favourites (userid, location) VALUES ('$userid', '$location')";
+
+        $result=mysqli_query($link, $sql);
+        echo 1;
+    } else {
+        echo 2;
+    }
+
 
 $link->close();
 
