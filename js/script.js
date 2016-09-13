@@ -1,31 +1,28 @@
 // A large portion of the maps implementation was adapted from code found within the Google API resources
 //Small sections of code were pulled from a previous assignment CaPool By Christopher Lane Lane, Mitchell Woods and Freya Rogers, however these pieces of code are purely functional and 
-
 var USERLOCMARKER;
 var GEOCODER;
 var SUBURB;
 var i = 0;
-
 //Update user loaction every minute
 window.setInterval(function () {
     updateUserLocation();
 }, 60000);
-
 //On load creat map
 $(document).ready(initMap);
-
 //Function to check user cookies
 function pageLoaded() {
+    $("#signupoverlay").hide();
     //Visitor has been there before
     if (document.cookie.indexOf("has_visited") >= 0) {
         $("#tuteoverlay").hide();
         $("#mapblocker").hide();
         //Hasn't visited before
-    } else {
+    }
+    else {
         document.cookie = "has_visited=anonymous; expires=Thu, 18 Dec 2100 12:00:00 UTC";
     }
 }
-
 //Map creation
 function initMap() {
     pageLoaded();
@@ -39,34 +36,28 @@ function initMap() {
             , lng: 153.012470
         }
     });
-
     //Creates a geocoder
     GEOCODER = new google.maps.Geocoder;
-
     //Check whether geolocation is possible
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(userPinInit, errorFunc);
         navigator.geolocation.getCurrentPosition(getPositionForCentre, errorFunc);
         //Not possible
-    } else {
+    }
+    else {
         alert("Your browser does not support Location Services!")
     }
-
-
     //Create User Pin
     function userPinInit(position) {
         //Get user location
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
         var coords = new google.maps.LatLng(latitude, longitude);
-
         //Message Box
         var contentString = "Click Me!";
-
         var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
-
         //The icon for this pin was found at https://t3.ftcdn.net/jpg/00/81/47/44/160_F_81474483_o4dKoLrn5GHY75SZVBomhz6K5cGoQdi4.jpg
         var image = {
             url: 'images/hourglasspin.png'
@@ -74,7 +65,6 @@ function initMap() {
             , origin: new google.maps.Point(0, 0)
             , anchor: new google.maps.Point(25, 50)
         };
-
         //Create Global Marker
         USERLOCMARKER = new google.maps.Marker({
             position: coords
@@ -82,31 +72,21 @@ function initMap() {
             , title: 'Click Me!'
             , icon: image
         });
-
         //Make marker open overlay and search Trove when clicked
         USERLOCMARKER.addListener('click', function () {
             geocodeLatLng(GEOCODER, map);
             $("#mapblocker").show();
             $("#photooverlay").show();
-
         });
-
         infowindow.open(map, USERLOCMARKER);
     }
-
     // Create the DIV to hold the control and call the CenterControl()
     // constructor passing in this DIV.
     var centerControlDiv = document.createElement('div');
     var centerControl = new CenterControl(centerControlDiv, map);
-
     centerControlDiv.index = 1;
-
-
-
     //Place Centre control on map
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
-
-
     //Find User location
     function getPositionForCentre(position) {
         var latitude = position.coords.latitude;
@@ -114,17 +94,13 @@ function initMap() {
         var coords = new google.maps.LatLng(latitude, longitude);
         centreMapOnUser(latitude, longitude);
     }
-
     //Find User Location
     function centreMapOnUser(userLat, userLong) {
         var userLat = userLat;
         var userLong = userLong;
         var coords = new google.maps.LatLng(userLat, userLong);
         map.panTo(coords);
-
-
     }
-
     //Catch Map Errors
     function errorFunc(error) {
         switch (error.code) {
@@ -145,14 +121,9 @@ function initMap() {
             break;
         }
     }
-
-
-
     //Support with custom controls found at https://developers.google.com/maps/documentation/javascript/examples/control-custom
-
     //Google Maps Centre Control
     function CenterControl(controlDiv, map) {
-
         // Set CSS for the control border.
         var controlUI = document.createElement('div');
         controlUI.style.backgroundColor = '#fff';
@@ -164,7 +135,6 @@ function initMap() {
         controlUI.style.textAlign = 'center';
         controlUI.title = 'Click to recenter the map';
         controlDiv.appendChild(controlUI);
-
         // Set CSS for the control interior.
         var controlText = document.createElement('div');
         controlText.style.color = 'rgb(25,25,25)';
@@ -175,30 +145,27 @@ function initMap() {
         controlText.style.paddingRight = '5px';
         controlText.innerHTML = 'my_location';
         controlUI.appendChild(controlText);
-
         // Setup the click event listeners: simply set the map to User.
         controlUI.addEventListener('click', function () {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(getPositionForCentre, errorFunc);
-            } else {
+            }
+            else {
                 alert("Your browser does not support Location Services!")
             }
         });
-
     }
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(getPositionForCentre, errorFunc);
-    } else {
+    }
+    else {
         alert("Your browser does not support Location Services!")
     };
 }
-
-
 // Move pin to user location
 function updateUserLocation() {
     navigator.geolocation.getCurrentPosition(userPinUpdate, errorFunc1);
 }
-
 // move pin to user location
 function userPinUpdate(position) {
     var latitude = position.coords.latitude;
@@ -206,7 +173,6 @@ function userPinUpdate(position) {
     var coords = new google.maps.LatLng(latitude, longitude);
     USERLOCMARKER.setPosition(coords);
 }
-
 //Catch Map errors
 function errorFunc1(error) {
     switch (error.code) {
@@ -227,7 +193,6 @@ function errorFunc1(error) {
         break;
     }
 }
-
 //Hides the photo overlay and destroys downloaded Trove Content
 function closePhotoOverlay() {
     $("#photooverlay").hide();
@@ -236,23 +201,19 @@ function closePhotoOverlay() {
     $("#output").empty();
     $("#overlaytitle").remove();
 }
-
 //Closes the tutorial overlay
 function closeTuteOverlay() {
     $("#tuteoverlay").hide();
     $("#mapblocker").hide();
 }
-
 //====================================================//
 //The following code is from the trove code example given by the tutors//
 //It can be found at http://deco1800.uqcloud.net/examples/troveImage.php //
 //====================================================//
-
 var loadedImages = [];
 var loadedTitles = [];
 var urlPatterns = ["flickr.com", "nla.gov.au", "artsearch.nga.gov.au", "recordsearch.naa.gov.au", "images.slsa.sa.gov.au", ".jpg", ".png"];
 var found = 0;
-
 
 function waitForFlickr() {
     if (found == 0) {
@@ -260,10 +221,10 @@ function waitForFlickr() {
     }
     if (found == loadedImages.length) {
         printImages();
-    } else {
+    }
+    else {
         setTimeout(waitForFlickr, 250);
     }
-
 }
 
 function searchTrove(suburb) {
@@ -276,28 +237,20 @@ function searchTrove(suburb) {
     var searchTerm = suburb;
     searchTerm = searchTerm.replace(/ /g, "%20");
     searchStr = "searchTerm=" + searchTerm;
-
     $.ajax({
         type: "POST"
         , url: "contacttrove.php"
         , data: searchStr
         , success: function (results) {
-            //alert(results);
             $('#output').empty();
-            var str = results.substring(2, results.length-1);
-            //hromalert(str);
+            var str = results.substring(2, results.length - 1);
             var JSONresponse = JSON.parse(str);
             console.log(JSONresponse);
             $.each(JSONresponse.response.zone[0].records.work, processImages);
-
             waitForFlickr(); // Waits for the flickr images to load
         }
     });
 };
-
-
-
-
 /*
  *   Depending where the image comes from, there is a special way to get that image from the website.
  *   This function works out where the image is from, and gets the image URL
@@ -309,62 +262,29 @@ function processImages(index, troveItem) {
     if (imgUrl.indexOf(urlPatterns[0]) >= 0) { // flickr
         found++;
         addFlickrItem(imgUrl, troveItem);
-
-    } else if (imgUrl.indexOf(urlPatterns[1]) >= 0) { // nla.gov
+    }
+    else if (imgUrl.indexOf(urlPatterns[1]) >= 0) { // nla.gov
         found++;
-        loadedImages.push(
-            "https" + imgUrl.substring(4, imgUrl.length) + "/representativeImage?wid=900" // change ?wid=900 to scale the image
+        loadedImages.push("https" + imgUrl.substring(4, imgUrl.length) + "/representativeImage?wid=900" // change ?wid=900 to scale the image
         );
-        loadedTitles.push(
-            imgTitle
-        );
-
-    } /*else if (imgUrl.indexOf(urlPatterns[2]) >= 0) { //artsearch
+        loadedTitles.push(imgTitle);
+    }
+    else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa 
         found++;
-        loadedImages.push(
-            "http://artsearch.nga.gov.au/IMAGES/LRG/" + getQueryVariable("IRN", imgUrl) + ".jpg"
-        );
-        loadedTitles.push(
-            imgTitle
-        );
-
-    } else if (imgUrl.indexOf(urlPatterns[3]) >= 0) { //recordsearch
+        loadedImages.push(imgUrl.slice(0, imgUrl.length - 3) + "jpg");
+        loadedTitles.push(imgTitle);
+    }
+    else if (imgUrl.indexOf(urlPatterns[5]) >= 0) { //direct jpg link 
         found++;
-        loadedImages.push(
-            "http://recordsearch.naa.gov.au/NAAMedia/ShowImage.asp?T=P&S=1&B=" + getQueryVariable("Number", imgUrl)
-        );
-        loadedTitles.push(
-            imgTitle
-        );
-
-    }*/ else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa 
+        loadedImages.push(imgUrl);
+        loadedTitles.push(imgTitle);
+    }
+    else if (imgUrl.indexOf(urlPatterns[6]) >= 0) { //direct png link
         found++;
-        loadedImages.push(
-            imgUrl.slice(0, imgUrl.length - 3) + "jpg"
-        );
-        loadedTitles.push(
-            imgTitle
-        );
-
-    } else if (imgUrl.indexOf(urlPatterns[5]) >= 0) { //direct jpg link 
-        found++;
-        loadedImages.push(
-            imgUrl
-        );
-        loadedTitles.push(
-            imgTitle
-        );
-
-    } else if (imgUrl.indexOf(urlPatterns[6]) >= 0) { //direct png link
-        found++;
-        loadedImages.push(
-            imgUrl
-        );
-        loadedTitles.push(
-            imgTitle
-        );
-
-    } else { // Could not reliably load image for item
+        loadedImages.push(imgUrl);
+        loadedTitles.push(imgTitle);
+    }
+    else { // Could not reliably load image for item
         // UNCOMMENT FOR DEBUG: 
         console.log("Not available: " + imgUrl);
     }
@@ -376,22 +296,16 @@ function addFlickrItem(imgUrl, troveItem) {
     var flickr_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + flickr_key + "&photo_id=";
     var url_comps = imgUrl.split("/");
     var photo_id = url_comps[url_comps.length - 1];
-
     $.getJSON(flickr_url + photo_id + "&format=json&nojsoncallback=1", function (data) {
         if (data.stat == "ok") {
             var flickr_image_url = data.sizes.size[data.sizes.size.length - 1].source;
-            loadedImages.push(
-                flickr_image_url
-            );
+            loadedImages.push(flickr_image_url);
         }
     });
-
 }
 
 function printImages() {
-
     $("#overlaybanner").append("<h3 id='overlaytitle' >" + SUBURB + ": A Step Back In Time</h3>");
-
     // Print out all images
     var count = 1;
     for (var i in loadedImages) {
@@ -410,13 +324,10 @@ function printImages() {
         image.style.width = "48%";
         image.style.margin = "1%";
         image.style.verticalAlign = "top";
-
         $("#image" + i).append(image);
         count++;
     }
-
 }
-
 // from http://css-tricks.com/snippets/javascript/get-url-variables/
 function getQueryVariable(variable, url) {
     var query = url.split("?");
@@ -429,22 +340,18 @@ function getQueryVariable(variable, url) {
     }
     return (false);
 }
-
 //=====================================//
 //This code was adapted from code found on the Google API portal//
 // https://developers.google.com/maps/documentation/javascript/examples/geocoding-reverse //
 //====================================//
-
 function geocodeLatLng(geocoder, map, infowindow) {
     navigator.geolocation.getCurrentPosition(geocodeCompletion, errorFunc1);
 }
-
 //Once geocoding is complete format the result and search trove
 function geocodeCompletion(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
     var coords = new google.maps.LatLng(latitude, longitude);
-
     GEOCODER.geocode({
         'location': coords
     }, function (results, status) {
@@ -454,7 +361,8 @@ function geocodeCompletion(position) {
                 var process = locale.split(" ");
                 if (process.length == 3) {
                     var suburb = process[0];
-                } else {
+                }
+                else {
                     var suburb = "";
                     for (var i = 0; i < (process.length - 3); i++) {
                         suburb += process[i] + " ";
@@ -466,22 +374,84 @@ function geocodeCompletion(position) {
                 newSuburb = newSuburb.trim();
                 SUBURB = newSuburb;
                 searchTrove(newSuburb);
-            } else {
+            }
+            else {
                 window.alert('No results found');
             }
-        } else {
+        }
+        else {
             window.alert('Geocoder failed due to: ' + status);
         }
     });
 }
-
 //Make it so that when map blocker is clicked, any overlays are hidden
 function mapBlockerClicked() {
     closePhotoOverlay();
     $("#tuteoverlay").hide();
 }
 
+function showLoginOverlay() {
+    $("#loginoverlay").show();
+    $("#mapblocker").show();
+}
+
+function hideLoginOverlay() {
+    $("#loginoverlay").hide();
+    $("#mapblocker").hide();
+}
 //Error message fo when Trove finds no usable results
 function nothingFound() {
     $("#output").append("<br><br>Sorry, we couldn't find anything for your current location.<br>Try moving around then giving it another go!");
 };
+
+function userLogin() {
+    var uname = $("#usernameinput").val();
+    var pword = $("#passwordinput").val();
+    $.ajax({
+        type: "POST"
+        , url: "userlogin.php"
+        , data: {
+            username: uname
+            , password: pword
+        }
+        , success: function (results) {
+            if (results == 1) {
+                loginComplete();
+            }
+        }
+    });
+}
+
+function userSignUp() {
+    var uname = $("#usernamesignupinput").val();
+    var pword = $("#passwordsignupinput").val();
+    $.ajax({
+        type: "POST"
+        , url: "usersignup.php"
+        , data: {
+            username: uname
+            , password: pword
+        }
+        , success: function (results) {
+            if (results == 1) {
+                loginComplete();
+            }
+        }
+    });
+}
+
+function showSignUp() {
+    $("#loginoverlay").hide();
+    $("#signupoverlay").show();
+}
+
+function showLogin() {
+    $("#loginoverlay").show();
+    $("#signupoverlay").hide();
+}
+
+function loginComplete() {
+    $("#loginoverlay").hide();
+    $("#signupoverlay").hide();
+    $("#mapblocker").hide();
+}
