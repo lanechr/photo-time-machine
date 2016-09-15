@@ -19,7 +19,6 @@ window.setInterval(function () {
 $(document).ready(initMap);
 //Function to check user cookies
 function pageLoaded() {
-    loadFavourites();
     $("#tuteoverlay").hide();
     $("#mapblocker").hide();
     $("#signupoverlay").hide();
@@ -492,6 +491,7 @@ function loginComplete() {
     $("#signupoverlay").hide();
     $("#loginmapblocker").hide();
     $('#logoutbuttonholder').show();
+    loadFavourites();
 }
 
 function signupComplete() {
@@ -500,10 +500,15 @@ function signupComplete() {
     $("#loginmapblocker").hide();
     $('#logoutbuttonholder').show();
     $("#tuteoverlay").show();
+    loadFavourites();
 }
 
 function userLogout() {
     showLogin();
+    deleteMarkers();
+    if (CURTOGGLE == "favourites"){
+        toggleMarkers();
+    }
     $('#logoutbuttonholder').hide();
     $.ajax({
         type: "POST"
@@ -616,4 +621,8 @@ function makeMarkersClckable() {
             }
         });
     }
+}
+
+function deleteMarkers(){
+    MARKERS = [];
 }
