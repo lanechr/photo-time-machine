@@ -66,8 +66,12 @@ session_start();
                 <br>
                 Password: <input id="passwordinput" type="password" name="password">
                 <br>
-                <button onclick="userLogin()">Submit</button>
-                <button onclick="showSignUp()">Sign Up</button>
+                <button onclick="userLogin()">Log in</button>
+                <p>
+                    New Here?
+                    <br>
+                    <button onclick="showSignUp()">Sign Up</button>
+                </p>
 
             </div>
 
@@ -81,8 +85,11 @@ session_start();
                 <br>
                 Password: <input id="passwordsignupinput" type="password" name="password">
                 <br>
-                <button onclick="userSignUp()">Submit</button>
-                <button onclick="showLogin()">Log In</button>
+                <button onclick="userSignUp()">Sign Up</button>
+                <p>
+                    <button onclick="showLogin()">Back</button>
+                </p>
+                
 
             </div>
 
