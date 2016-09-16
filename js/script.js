@@ -597,6 +597,7 @@ function toggleMarkers() {
         USERLOCMARKER.setVisible(false);
         if (!(EVENTSLOADED)){
             makeMarkersClckable();
+            EVENTSLOADED = true;
         }
         showFavs();
         CURTOGGLE = "favourites"
@@ -607,7 +608,6 @@ function toggleMarkers() {
         hideFavs();
         CURTOGGLE = "user";
         $('#togglebutton').html("Show Favourites");
-        GEOITERATOR = 0;
     }
 }
 
@@ -630,4 +630,5 @@ function deleteMarkers(){
         MARKERS[i].setMap(null);
     }
     MARKERS = [];
+    SUBURBS = [];
 }
