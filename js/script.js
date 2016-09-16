@@ -538,6 +538,8 @@ function saveCurrentLocation() {
             }
         }
     });
+    deleteMarkers();
+    loadFavourites();
 }
 //The following function was found at http://stackoverflow.com/questions/4878756/javascript-how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
 function toTitleCase(str) {
@@ -624,5 +626,8 @@ function makeMarkersClckable() {
 }
 
 function deleteMarkers(){
+    for(i=0; i<MARKERS.length; i++){
+        MARKERS[i].setMap(null);
+    }
     MARKERS = [];
 }
