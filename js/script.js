@@ -34,10 +34,107 @@ function pageLoaded() {
 function initMap() {
     pageLoaded();
     //Create the map
+    // The style used in the map is called "Old Timey" and was found at https://snazzymaps.com/style/22/old-timey
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13
         , streetViewControl: false
         , mapTypeControl: false
+        , styles: [
+            {  
+                "featureType": "administrative"
+                , "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                            ]           
+            }
+            , {
+                "featureType": "poi"
+                , "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                            ]
+            }
+            , {
+                "featureType": "road"
+                , "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                            ]
+                }
+            , {
+                "featureType": "water"
+                , "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                            ]
+            }
+            , {
+                "featureType": "transit"
+                , "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                            ]
+            }
+            , {
+                "featureType": "landscape"
+                , "stylers": [
+                    {
+                        "visibility": "simplified"
+                }
+                            ]
+            }
+            , {
+                "featureType": "road.highway"
+                , "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                            ]
+            }
+            , {
+                "featureType": "road.local"
+                , "stylers": [
+                    {
+                        "visibility": "on"
+                    }
+                            ]
+            }
+            , {
+                "featureType": "road.highway"
+                , "elementType": "geometry"
+                , "stylers": [
+                    {
+                        "visibility": "on"
+                    }
+                            ]
+            }
+            , {
+                "featureType": "water"
+                , "stylers": [
+                    {
+                        "color": "#84afa3"
+                    }
+                    , {
+                        "lightness": 52
+                    }
+                            ]
+            }
+            , {
+                "stylers": [
+                    {
+                        "saturation": -77
+                    }
+                            ]
+            }
+            , {
+                "featureType": "road"
+            }
+        ]
         , center: {
             lat: -27.495421
             , lng: 153.012470
@@ -45,6 +142,7 @@ function initMap() {
     });
     //Creates a geocoder
     GEOCODER = new google.maps.Geocoder;
+    map.setOptions({ minZoom: 5, maxZoom: 15 });
     //Check whether geolocation is possible
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(userPinInit, errorFunc);
@@ -506,7 +604,7 @@ function signupComplete() {
 function userLogout() {
     showLogin();
     deleteMarkers();
-    if (CURTOGGLE == "favourites"){
+    if (CURTOGGLE == "favourites") {
         toggleMarkers();
     }
     $('#logoutbuttonholder').hide();
@@ -595,7 +693,7 @@ function hideFavs(map) {
 function toggleMarkers() {
     if (CURTOGGLE == "user") {
         USERLOCMARKER.setVisible(false);
-        if (!(EVENTSLOADED)){
+        if (!(EVENTSLOADED)) {
             makeMarkersClckable();
             EVENTSLOADED = true;
         }
@@ -615,7 +713,7 @@ function makeMarkersClckable() {
     for (var i = 0; i < MARKERS.length; i++) {
         MARKERS[i].addListener('click', function () {
             for (var j = 0; j < MARKERS.length; j++) {
-                if (this == MARKERS[j]){
+                if (this == MARKERS[j]) {
                     searchTrove(SUBURBS[j]);
                     $("#mapblocker").show();
                     $("#photooverlay").show();
@@ -625,8 +723,8 @@ function makeMarkersClckable() {
     }
 }
 
-function deleteMarkers(){
-    for(i=0; i<MARKERS.length; i++){
+function deleteMarkers() {
+    for (i = 0; i < MARKERS.length; i++) {
         MARKERS[i].setMap(null);
     }
     MARKERS = [];
