@@ -191,9 +191,9 @@ function initMap() {
         //The icon for this pin was found at https://t3.ftcdn.net/jpg/00/81/47/44/160_F_81474483_o4dKoLrn5GHY75SZVBomhz6K5cGoQdi4.jpg
         var image = {
             url: 'images/hourglasspin.png'
-            , size: new google.maps.Size(50, 50)
+            , size: new google.maps.Size(32, 57)
             , origin: new google.maps.Point(0, 0)
-            , anchor: new google.maps.Point(25, 50)
+            , anchor: new google.maps.Point(16, 50)
         };
         //Create Global Marker
         USERLOCMARKER = new google.maps.Marker({
@@ -207,6 +207,7 @@ function initMap() {
             geocodeLatLng(GEOCODER, map);
             $("#mapblocker").show();
             $("#photooverlay").show();
+            $("#savelocbutton").show();
         });
         //        infowindow.open(map, USERLOCMARKER);
     }
@@ -685,10 +686,17 @@ function loadFavourites() {
                     'address': JSONresponse[i] + " Australia"
                 }, function (results, status) {
                     if (status == google.maps.GeocoderStatus.OK) {
+                        var image = {
+                            url: 'images/favouritepin.png'
+                            , size: new google.maps.Size(37, 55)
+                            , origin: new google.maps.Point(0, 0)
+                            , anchor: new google.maps.Point(18.5, 50)
+                        };
                         var marker = new google.maps.Marker({
                             map: map
                             , position: results[0].geometry.location
                             , visible: false
+                            , icon: image
                         });
                         MARKERS.push(marker);
                     }
@@ -742,6 +750,7 @@ function makeMarkersClckable() {
                     searchTrove(SUBURBS[j]);
                     $("#mapblocker").show();
                     $("#photooverlay").show();
+                    $("#savelocbutton").hide();
                 }
             }
         });

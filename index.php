@@ -103,7 +103,7 @@ session_start();
             <div id="photooverlay">
                 <div id="overlaybanner">
                     <button class="overlaycross" onclick="closePhotoOverlay()">&#735;</button>
-                    <div id="locationbuttonholder"><button onclick="saveCurrentLocation()">Save Location</button></div>
+                    <div id="locationbuttonholder"><button id="savelocbutton" onclick="saveCurrentLocation()">Save Location</button></div>
                     <a href="http://trove.nla.gov.au">
                         <img id="trovecredit" src="images/API-light.png" alt="trovelogo">
                     </a>
