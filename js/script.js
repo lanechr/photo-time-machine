@@ -40,13 +40,13 @@ function initMap() {
         , streetViewControl: false
         , mapTypeControl: false
         , styles: [
-            {  
+            {
                 "featureType": "administrative"
                 , "stylers": [
                     {
                         "visibility": "off"
                     }
-                            ]           
+                            ]
             }
             , {
                 "featureType": "poi"
@@ -142,7 +142,32 @@ function initMap() {
     });
     //Creates a geocoder
     GEOCODER = new google.maps.Geocoder;
-    map.setOptions({ minZoom: 5, maxZoom: 15 });
+    map.setOptions({
+        minZoom: 3
+        , maxZoom: 15
+    });
+    //The next 20 lines of code stop the map from panning to far and were accessed from http://stackoverflow.com/questions/23580831/how-to-block-google-maps-api-v3-panning-in-the-gray-zone-over-north-pole-or-unde
+    google.maps.event.addListener(map, 'center_changed', function () {
+        checkBounds(map);
+    });
+    // If the map position is out of range, move it back
+    function checkBounds(map) {
+        var latNorth = map.getBounds().getNorthEast().lat();
+        var latSouth = map.getBounds().getSouthWest().lat();
+        var newLat;
+        if (latNorth < 85 && latSouth > -85) /* in both side -> it's ok */ return;
+        else {
+            if (latNorth > 85 && latSouth < -85) /* out both side -> it's ok */ return;
+            else {
+                if (latNorth > 85) newLat = map.getCenter().lat() - (latNorth - 85); /* too north, centering */
+                if (latSouth < -85) newLat = map.getCenter().lat() - (latSouth + 85); /* too south, centering */
+            }
+        }
+        if (newLat) {
+            var newCenter = new google.maps.LatLng(newLat, map.getCenter().lng());
+            map.setCenter(newCenter);
+        }
+    }
     //Check whether geolocation is possible
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(userPinInit, errorFunc);
