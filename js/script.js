@@ -624,12 +624,12 @@ function signupComplete() {
     $("#loginmapblocker").hide();
     $('#logoutbuttonholder').show();
     $("#tuteoverlay").show();
-    loadFavourites();
 }
 
 function userLogout() {
     showLogin();
     deleteMarkers();
+    EVENTSLOADED = false;
     if (CURTOGGLE == "favourites") {
         toggleMarkers();
     }
@@ -641,6 +641,7 @@ function userLogout() {
 }
 
 function saveCurrentLocation() {
+    EVENTSLOADED = false;
     $.ajax({
         type: "POST"
         , url: "addfavouritelocation.php"
@@ -727,7 +728,7 @@ function toggleMarkers() {
     if (CURTOGGLE == "user") {
         USERLOCMARKER.setVisible(false);
         if (!(EVENTSLOADED)) {
-            makeMarkersClckable();
+            makeMarkersClickable();
             EVENTSLOADED = true;
         }
         showFavs();
@@ -742,7 +743,7 @@ function toggleMarkers() {
     }
 }
 
-function makeMarkersClckable() {
+function makeMarkersClickable() {
     for (var i = 0; i < MARKERS.length; i++) {
         MARKERS[i].addListener('click', function () {
             for (var j = 0; j < MARKERS.length; j++) {
