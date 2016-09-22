@@ -577,7 +577,6 @@ function userSignUp() {
         }
         , success: function (results) {
             //Response Codes: 1=Success, 2=No Input, 3=Database Connection failed, 4=Username Already Exists
-            alert(results);
             switch (results) {
             case "1":
                 signupComplete();
@@ -765,4 +764,16 @@ function deleteMarkers() {
     }
     MARKERS = [];
     SUBURBS = [];
+}
+
+function loginCheckEnter(e) {
+   if(e && e.keyCode == 13) {
+      userLogin();
+   }
+}
+
+function signUpCheckEnter(e) {
+   if(e && e.keyCode == 13) {
+      userSignUp();
+   }
 }

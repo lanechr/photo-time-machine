@@ -117,13 +117,13 @@ a:active {
 }
 
 #overlaybanner {
-    height: 3vh;
+    height: 4vh;
 }
 
 #output {
     position: relative;
-    top: 3vh;
-    height: 65vh;
+    top: 5vh;
+    height: 63vh;
     overflow: scroll;
 }
 
@@ -325,4 +325,8 @@ tro
     position: absolute;
     top: 55px;
     right: 10px;
+}
+
+.tuteimage {
+    display: inline-block;
 }
