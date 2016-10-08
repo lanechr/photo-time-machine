@@ -33,9 +33,14 @@ session_start();
     </head>
 
     <body>
-        <header id="banner"> <a href="index.php"><h1>Photo Time Machine</h1></a>
-            <!--        <input>Search Location</input>-->
+        <header id="banner"> 
+            <!--replace later -->
+            <a href="index.php"><img src="images/crap_temp_logo.png" id="mainLogo"></a>
+            
+            <a href="index.php" id="siteNameText"><h1>Photo Time Machine</h1></a>
+            
             <div id="logoutbuttonholder">
+                Signed in as <span id="usernameDisplay">USERNAME</span>
                 <button id="logoutbutton" onclick="userLogout()">Log Out</button>
             </div>
             <div id="togglebuttonholder">
@@ -79,7 +84,7 @@ session_start();
                 <br>
                 <button onclick="userSignUp()">Sign Up</button>
                 <button onclick="showLogin()">Back</button>
-                </p>
+                
             </div>
             <!--Tutorial-->
             <div id="tuteoverlay">
