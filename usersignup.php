@@ -3,6 +3,9 @@
 session_start();
 $username= $_REQUEST['username'];
 $password = $_REQUEST['password'];
+$_SESSION['username'] = $username;
+
+
 //Nothing Entered Test
 if ($username == "" || $password == ""){
     echo 2;

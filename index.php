@@ -40,7 +40,11 @@ session_start();
             <a href="index.php" id="siteNameText"><h1>Photo Time Machine</h1></a>
             
             <div id="logoutbuttonholder">
-                Signed in as <span id="usernameDisplay">USERNAME</span>
+                <?php 
+                    if (isset($_SESSION['username'])) {
+                        echo "Signed in as " . $_SESSION['username'];
+                    }
+                ?>
                 <button id="logoutbutton" onclick="userLogout()">Log Out</button>
             </div>
             <div id="togglebuttonholder">
