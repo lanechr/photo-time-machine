@@ -7,7 +7,7 @@ var i = 0;
 var LOGGEDIN = false;
 var map;
 var MARKERS = [];
-var CURTOGGLE = "user";
+var CURTOGGLE = "no favourites";
 var THISSUBURB;
 var GEOITERATOR = 0;
 var EVENTSLOADED = false;
@@ -725,8 +725,8 @@ function hideFavs(map) {
 }
 
 function toggleMarkers() {
-    if (CURTOGGLE == "user") {
-        USERLOCMARKER.setVisible(false);
+    if (CURTOGGLE == "no favourites") {
+        //USERLOCMARKER.setVisible(false);
         if (!(EVENTSLOADED)) {
             makeMarkersClickable();
             EVENTSLOADED = true;
@@ -736,9 +736,9 @@ function toggleMarkers() {
         $('#togglebutton').html("Hide Favourites");
     }
     else {
-        USERLOCMARKER.setVisible(true);
+        //USERLOCMARKER.setVisible(true);
         hideFavs();
-        CURTOGGLE = "user";
+        CURTOGGLE = "no favourites";
         $('#togglebutton').html("Show Favourites");
     }
 }
