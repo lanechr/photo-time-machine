@@ -733,7 +733,7 @@ function toggleMarkers() {
         }
         showFavs();
         CURTOGGLE = "favourites"
-        $('#togglebutton').html("Show My Location");
+        $('#togglebutton').html("Hide Favourites");
     }
     else {
         USERLOCMARKER.setVisible(true);
