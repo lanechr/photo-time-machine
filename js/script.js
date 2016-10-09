@@ -1,13 +1,14 @@
 // A large portion of the maps implementation was adapted from code found within the Google API resources
 //Small sections of code were pulled from a previous assignment CaPool By Christopher Lane Lane, Mitchell Woods and Freya Rogers, however these pieces of code are purely functional and 
 var USERLOCMARKER;
+var CLICKMARKER;
 var GEOCODER;
 var SUBURB;
 var i = 0;
 var LOGGEDIN = false;
 var map;
 var MARKERS = [];
-var CURTOGGLE = "no favourites";
+var FAVTOGGLE = "no favourites";
 var THISSUBURB;
 var GEOITERATOR = 0;
 var EVENTSLOADED = false;
@@ -24,8 +25,7 @@ function pageLoaded() {
     $("#signupoverlay").hide();
     if (LOGGEDIN == true) {
         loginComplete();
-    }
-    else {
+    } else {
         $("#loginmapblocker").show();
         $('#logoutbuttonholder').hide();
     }
@@ -630,7 +630,7 @@ function userLogout() {
     showLogin();
     deleteMarkers();
     EVENTSLOADED = false;
-    if (CURTOGGLE == "favourites") {
+    if (FAVTOGGLE == "favourites") {
         toggleMarkers();
     }
     $('#logoutbuttonholder').hide();
@@ -725,20 +725,20 @@ function hideFavs(map) {
 }
 
 function toggleMarkers() {
-    if (CURTOGGLE == "no favourites") {
+    if (FAVTOGGLE == "no favourites") {
         //USERLOCMARKER.setVisible(false);
         if (!(EVENTSLOADED)) {
             makeMarkersClickable();
             EVENTSLOADED = true;
         }
         showFavs();
-        CURTOGGLE = "favourites"
+        FAVTOGGLE = "favourites"
         $('#togglebutton').html("Hide Favourites");
     }
     else {
         //USERLOCMARKER.setVisible(true);
         hideFavs();
-        CURTOGGLE = "no favourites";
+        FAVTOGGLE = "no favourites";
         $('#togglebutton').html("Show Favourites");
     }
 }
@@ -764,6 +764,7 @@ function deleteMarkers() {
     }
     MARKERS = [];
     SUBURBS = [];
+    CLICKMARKER = null;
 }
 
 function loginCheckEnter(e) {
@@ -777,3 +778,28 @@ function signUpCheckEnter(e) {
       userSignUp();
    }
 }
+
+//adds a pin anywhere the user clicks
+/*map.addEventListener('click', function(){
+    
+    var image = {
+            url: 'images/hourglasspin.png'
+            , size: new google.maps.Size(32, 57)
+            , origin: new google.maps.Point(0, 0)
+            , anchor: new google.maps.Point(16, 50)
+        };
+    
+    CLICKMARKER = new google.maps.Marker({
+        position: //coords
+        , map: map
+        , title: 'Click Me!'
+        , icon: image
+    });
+    
+    CLICKMARKER.addListener('click', function () {
+        geocodeLatLng(GEOCODER, map);
+        $("#mapblocker").show();
+        $("#photooverlay").show();
+        $("#savelocbutton").show();
+    });
+});*/
