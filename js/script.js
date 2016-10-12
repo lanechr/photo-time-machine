@@ -726,7 +726,7 @@ function hideFavs(map) {
 
 function toggleMarkers() {
     if (FAVTOGGLE == "no favourites") {
-        //USERLOCMARKER.setVisible(false);
+        USERLOCMARKER.setVisible(false);
         if (!(EVENTSLOADED)) {
             makeMarkersClickable();
             EVENTSLOADED = true;
@@ -736,7 +736,7 @@ function toggleMarkers() {
         $('#togglebutton').html("Hide Favourites");
     }
     else {
-        //USERLOCMARKER.setVisible(true);
+        USERLOCMARKER.setVisible(true);
         hideFavs();
         FAVTOGGLE = "no favourites";
         $('#togglebutton').html("Show Favourites");
