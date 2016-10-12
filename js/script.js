@@ -780,7 +780,8 @@ function signUpCheckEnter(e) {
 }
 
 //adds a pin anywhere the user clicks
-/*map.addEventListener('click', function(){
+/*
+map.addEventListener('rightclick', function(){
     
     var image = {
             url: 'images/hourglasspin.png'
@@ -790,7 +791,7 @@ function signUpCheckEnter(e) {
         };
     
     CLICKMARKER = new google.maps.Marker({
-        position: //coords
+        position: latLng
         , map: map
         , title: 'Click Me!'
         , icon: image
@@ -802,4 +803,5 @@ function signUpCheckEnter(e) {
         $("#photooverlay").show();
         $("#savelocbutton").show();
     });
-});*/
+});
+*/
