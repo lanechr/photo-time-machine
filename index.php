@@ -40,7 +40,7 @@ session_start();
             <a href="index.php" id="siteNameText"><h1>Photo Time Machine</h1></a>
             
             <div id="logoutbuttonholder">
-                <p>Signed in as 
+                Signed in as 
                 <span id="userdisplay">
                 <?php 
                     if (isset($_SESSION['username'])) {
@@ -49,7 +49,6 @@ session_start();
                 ?>
                 </span>
                 <button id="logoutbutton" onclick="userLogout()">Log Out</button>
-                </p>
             </div>
             <div id="togglebuttonholder">
                 <button id="togglebutton" onclick="toggleMarkers()">Show Favourites</button>

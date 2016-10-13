@@ -294,9 +294,10 @@ function initMap() {
     };
     
 	//adds a pin anywhere the user clicks
-	map.addListener('click', function(e){
-		console.log(e.latLng);
+	map.addListener('rightclick', function(e){
+		//console.log(e.latLng);
 		placeClickMarker(e.latLng, map);
+        //geocodeCompletion(position)
 	});
 
 }
@@ -311,15 +312,19 @@ function placeClickMarker(latLng, map) {
 		, map: map
 		, title: 'Click Me!'
 	});
+    
+    setTimeout(function() {clickMarkerIsClicked();}, 500);
 	
 	CLICKMARKER.addListener('click', function () {
-		
-		$("#mapblocker").show();
-		$("#photooverlay").show();
-		$("#savelocbutton").show();
+        clickMarkerIsClicked();
 	});
 }
 
+function clickMarkerIsClicked(){
+    $("#mapblocker").show();
+    $("#photooverlay").show();
+    $("#savelocbutton").show();
+}
 
 // Move pin to user location
 function updateUserLocation() {
