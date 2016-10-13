@@ -307,6 +307,7 @@ function placeClickMarker(latLng, map) {
     if (CLICKMARKER != null){
         deleteClickMarker();
     };
+    
     CLICKMARKER = new google.maps.Marker({
 		position: latLng
 		, map: map
@@ -658,6 +659,10 @@ function signupComplete(username) {
     $("#signupoverlay").hide();
     $("#loginmapblocker").hide();
     $('#logoutbuttonholder').show();
+    $("#tuteoverlay").show();
+}
+
+function showHelp() {
     $("#tuteoverlay").show();
 }
 

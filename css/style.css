@@ -329,7 +329,7 @@ Rules for sizing the icon. */
 
 #logoutbuttonholder {
     position: absolute;
-    top: 30px;
+    top: 25px;
     right: 15px;
 }
 
@@ -349,6 +349,12 @@ Rules for sizing the icon. */
 
 #togglebuttonholder {
     position: absolute;
-    top: 80px;
+    top: 60px;
+    right: 15px;
+}
+
+#helpbuttonholder {
+    position: absolute;
+    top: 95px;
     right: 15px;
 }

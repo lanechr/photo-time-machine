@@ -53,6 +53,9 @@ session_start();
             <div id="togglebuttonholder">
                 <button id="togglebutton" onclick="toggleMarkers()">Show Favourites</button>
             </div>
+            <div id="helpbuttonholder">
+                <button id="helpbutton" onclick="showHelp()">Help</button>
+            </div>
         </header>
         <!-- Map -->
         <div id="map" class="map"></div>
@@ -96,7 +99,8 @@ session_start();
             <!--Tutorial-->
             <div id="tuteoverlay">
                 <h1>Welcome to Photo Time Machine!</h1>
-                <p><img class="tuteimage" src="images/hourglasspin.png">This is the pin that shows you your current location. Click it to see photos from where you are right now!</p>
+                <p><img class="tuteimage" src="images/hourglasspin.png">This is the pin that shows you your current location. Click it to see photos from the suburb you are in right now!</p>
+                <p><!--img class="tuteimage" src="" -->Right click anywhere to see photos from the surrounding suburb!</p>
                 <p><img class="tuteimage" src="images/favouritepin.png">This is the pin that shows you your previously saved locations. Click these to see photos you've seen before, or maybe some new ones!</p>
                 <button class="overlaycross" onclick="closeTuteOverlay()">&#735;</button>
             </div>
