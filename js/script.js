@@ -294,15 +294,19 @@ function initMap() {
     };
     
 	//adds a pin anywhere the user clicks
-	/*map.addListener('click', function(e){
+	map.addListener('click', function(e){
 		console.log(e.latLng);
 		placeClickMarker(e.latLng, map);
-	});*/
+	});
 
 }
 
 function placeClickMarker(latLng, map) {
-	CLICKMARKER = new google.maps.Marker({
+    //deletes old clickmarker
+    if (CLICKMARKER != null){
+        deleteClickMarker();
+    };
+    CLICKMARKER = new google.maps.Marker({
 		position: latLng
 		, map: map
 		, title: 'Click Me!'
@@ -790,6 +794,11 @@ function deleteMarkers() {
     }
     MARKERS = [];
     SUBURBS = [];
+    deleteClickMarker();
+}
+
+function deleteClickMarker() {
+    CLICKMARKER.setMap(null);
     CLICKMARKER = null;
 }
 
