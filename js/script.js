@@ -293,20 +293,17 @@ function initMap() {
         alert("Your browser does not support Location Services!")
     };
     
-	//adds a pin anywhere the user clicks
+	//adds a pin (CLICKMARKER) anywhere the user clicks
 	map.addListener('rightclick', function(e){
-		//console.log(e.latLng);
 		placeClickMarker(e.latLng, map);
-        //geocodeCompletion(position)
+        map.panTo(e.latLng);
 	});
 
 }
 
+//functions needed for clickmarker
 function placeClickMarker(latLng, map) {
-    //deletes old clickmarker
-    if (CLICKMARKER != null){
-        deleteClickMarker();
-    };
+    deleteClickMarker();
     
     CLICKMARKER = new google.maps.Marker({
 		position: latLng
@@ -314,7 +311,8 @@ function placeClickMarker(latLng, map) {
 		, title: 'Click Me!'
 	});
     
-    setTimeout(function() {clickMarkerIsClicked();}, 500);
+    //automatically loads photo screen with trove content
+    setTimeout(function() {clickMarkerIsClicked();}, 700);
 	
 	CLICKMARKER.addListener('click', function () {
         clickMarkerIsClicked();
@@ -322,10 +320,13 @@ function placeClickMarker(latLng, map) {
 }
 
 function clickMarkerIsClicked(){
+    var coords = CLICKMARKER.getPosition();
+    geocodeCompletion(coords);
     $("#mapblocker").show();
     $("#photooverlay").show();
     $("#savelocbutton").show();
 }
+//end 
 
 // Move pin to user location
 function updateUserLocation() {
@@ -511,13 +512,19 @@ function getQueryVariable(variable, url) {
 // https://developers.google.com/maps/documentation/javascript/examples/geocoding-reverse //
 //====================================//
 function geocodeLatLng(geocoder, map) {
-    navigator.geolocation.getCurrentPosition(geocodeCompletion, errorFunc1);
+    navigator.geolocation.getCurrentPosition(preGeocodeCompletion, errorFunc1);
 }
-//Once geocoding is complete format the result and search trove
-function geocodeCompletion(position) {
+
+//inbetween function that coverts the weird position object thing into a simple latlng type object
+function preGeocodeCompletion(position){
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
-    var coords = new google.maps.LatLng(latitude, longitude);
+    var coords = new google.maps.LatLng(latitude, longitude); 
+    geocodeCompletion(coords);
+}
+
+//Once geocoding is complete format the result and search trove
+function geocodeCompletion(coords) {
     GEOCODER.geocode({
         'location': coords
     }, function (results, status) {
@@ -667,6 +674,7 @@ function showHelp() {
 }
 
 function userLogout() {
+    $("#userdisplay").empty();
     showLogin();
     deleteMarkers();
     EVENTSLOADED = false;
@@ -808,8 +816,10 @@ function deleteMarkers() {
 }
 
 function deleteClickMarker() {
-    CLICKMARKER.setMap(null);
-    CLICKMARKER = null;
+    if (CLICKMARKER != null){
+        CLICKMARKER.setMap(null);
+        CLICKMARKER.setMap(null);
+    }; 
 }
 
 function loginCheckEnter(e) {
