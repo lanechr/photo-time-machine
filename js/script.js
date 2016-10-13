@@ -292,7 +292,31 @@ function initMap() {
     else {
         alert("Your browser does not support Location Services!")
     };
+    
+	//adds a pin anywhere the user clicks
+	/*map.addListener('click', function(e){
+		console.log(e.latLng);
+		placeClickMarker(e.latLng, map);
+	});*/
+
 }
+
+function placeClickMarker(latLng, map) {
+	CLICKMARKER = new google.maps.Marker({
+		position: latLng
+		, map: map
+		, title: 'Click Me!'
+	});
+	
+	CLICKMARKER.addListener('click', function () {
+		
+		$("#mapblocker").show();
+		$("#photooverlay").show();
+		$("#savelocbutton").show();
+	});
+}
+
+
 // Move pin to user location
 function updateUserLocation() {
     navigator.geolocation.getCurrentPosition(userPinUpdate, errorFunc1);
@@ -549,7 +573,7 @@ function userLogin() {
             //Response Codes: 1=Success, 2=No Input, 3=Database Connection failed, 4=Incorrect Username or Password
             switch (results) {
             case "1":
-                loginComplete();
+                loginComplete(uname);
                 break;
             case "2":
                 $('#loginerrordiv').html("Please enter your Username and Password");
@@ -579,7 +603,7 @@ function userSignUp() {
             //Response Codes: 1=Success, 2=No Input, 3=Database Connection failed, 4=Username Already Exists
             switch (results) {
             case "1":
-                signupComplete();
+                signupComplete(uname);
                 break;
             case "2":
                 $('#signuperrordiv').html("Please enter a Username and Password");
@@ -610,7 +634,8 @@ function showLogin() {
     $("#signupoverlay").hide();
 }
 
-function loginComplete() {
+function loginComplete(username) {
+	$("#userdisplay").append(username);
     $("#loginoverlay").hide();
     $("#signupoverlay").hide();
     $("#loginmapblocker").hide();
@@ -618,7 +643,8 @@ function loginComplete() {
     loadFavourites();
 }
 
-function signupComplete() {
+function signupComplete(username) {
+	$("#userdisplay").append(username);
     $("#loginoverlay").hide();
     $("#signupoverlay").hide();
     $("#loginmapblocker").hide();
@@ -779,29 +805,3 @@ function signUpCheckEnter(e) {
    }
 }
 
-//adds a pin anywhere the user clicks
-/*
-map.addEventListener('rightclick', function(){
-    
-    var image = {
-            url: 'images/hourglasspin.png'
-            , size: new google.maps.Size(32, 57)
-            , origin: new google.maps.Point(0, 0)
-            , anchor: new google.maps.Point(16, 50)
-        };
-    
-    CLICKMARKER = new google.maps.Marker({
-        position: latLng
-        , map: map
-        , title: 'Click Me!'
-        , icon: image
-    });
-    
-    CLICKMARKER.addListener('click', function () {
-        geocodeLatLng(GEOCODER, map);
-        $("#mapblocker").show();
-        $("#photooverlay").show();
-        $("#savelocbutton").show();
-    });
-});
-*/
