@@ -130,13 +130,13 @@ a:active {
 }
 
 #overlaybanner {
-    height: 4vh;
+    height: 5vh;
 }
 
 #output {
     position: relative;
-    top: 5vh;
-    height: 63vh;
+    top: 10vh;
+    height: 57vh;
     overflow: scroll;
 }
 
@@ -357,4 +357,8 @@ Rules for sizing the icon. */
     position: absolute;
     top: 95px;
     right: 15px;
+}
+
+#savelocbutton {
+    z-index: 1000;
 }

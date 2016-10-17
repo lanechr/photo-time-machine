@@ -51,7 +51,7 @@ session_start();
                 <button id="logoutbutton" onclick="userLogout()">Log Out</button>
             </div>
             <div id="togglebuttonholder">
-                <button id="togglebutton" onclick="toggleMarkers()">Show Favourites</button>
+                <button id="togglebutton" onclick="toggleMarkers()">Show  Favourites</button>
             </div>
             <div id="helpbuttonholder">
                 <button id="helpbutton" onclick="showHelp()">Help</button>
