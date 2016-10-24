@@ -372,6 +372,7 @@ function closePhotoOverlay() {
     //Purges data from output div
     $("#output").empty();
     $("#overlaytitle").remove();
+    $("overlaysubtext").remove();
 }
 //Closes the tutorial overlay
 function closeTuteOverlay() {
@@ -392,6 +393,7 @@ function waitForFlickr() {
         nothingFound();
     }
     if (found == loadedImages.length) {
+        $("#overlaysubtext").remove();
         printImages();
     }
     else {
@@ -403,6 +405,7 @@ function searchTrove(suburb) {
     SUBURB = toTitleCase(suburb);
     //event.preventDefault();
     $("#overlaytitle").remove();
+    $("#overlaysubtext").remove();
     loadedImages = [];
     loadedTitles = [];
     found = 0;
@@ -478,7 +481,7 @@ function addFlickrItem(imgUrl, troveItem) {
 }
 
 function printImages() {
-    $("#overlaybanner").append("<h3 id='overlaytitle' >" + SUBURB + ": A Step Back In Time</h3>");
+    $("#overlaybanner").append("<h3 id='overlaytitle' >" + SUBURB + ": A Step Back In Time</h3><p id='overlaysubtext'>Click an image to view as a gallery</p>");
     // Print out all images
     var count = 1;
     for (var i in loadedImages) {
@@ -579,7 +582,7 @@ function hideLoginOverlay() {
 }
 //Error message fo when Trove finds no usable results
 function nothingFound() {
-    $("#output").append("<br><br>Sorry, we couldn't find anything for your current location.<br>Try moving around then giving it another go!");
+    $("#output").append("<br><br>Sorry, we couldn't find anything for your current location.<br>Try clicking somwhere else then giving it another go!");
 };
 
 function userLogin() {
