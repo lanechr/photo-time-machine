@@ -35,9 +35,8 @@ session_start();
     <body>
         <header id="banner"> 
             <!--replace later -->
-            <a href="index.php"><img src="images/crap_temp_logo.png" id="mainLogo"></a>
-            
-            <a href="index.php" id="siteNameText"><h1>Photo Time Machine</h1></a>
+            <a href="index.php"><img src="images/phototmlogo.png" id="mainLogo"></a>
+
             
             <div id="logoutbuttonholder">
                 Signed in as 
@@ -100,7 +99,7 @@ session_start();
             <div id="tuteoverlay">
                 <h1>Welcome to Photo Time Machine!</h1>
                 <p><img class="tuteimage" src="images/hourglasspin.png">This is the pin that shows you your current location. Click it to see photos from the suburb you are in right now!</p>
-                <p><!--img class="tuteimage" src="" -->Right click anywhere to see photos from the surrounding suburb!</p>
+                <p><img class="tuteimage" src="images/clickedpin1.png">Click anywhere to see photos from the surrounding suburb!</p>
                 <p><img class="tuteimage" src="images/favouritepin.png">This is the pin that shows you your previously saved locations. Click these to see photos you've seen before, or maybe some new ones!</p>
                 <button class="overlaycross" onclick="closeTuteOverlay()">&#735;</button>
             </div>

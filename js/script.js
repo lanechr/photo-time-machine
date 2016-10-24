@@ -294,7 +294,7 @@ function initMap() {
     };
     
 	//adds a pin (CLICKMARKER) anywhere the user clicks
-	map.addListener('rightclick', function(e){
+	map.addListener('click', function(e){
 		placeClickMarker(e.latLng, map);
         map.panTo(e.latLng);
 	});
@@ -304,11 +304,17 @@ function initMap() {
 //functions needed for clickmarker
 function placeClickMarker(latLng, map) {
     deleteClickMarker();
-    
+    var image = {
+                            url: 'images/clickedpin1.png'
+                            , size: new google.maps.Size(37, 55)
+                            , origin: new google.maps.Point(0, 0)
+                            , anchor: new google.maps.Point(18.5, 50)
+                        };
     CLICKMARKER = new google.maps.Marker({
 		position: latLng
 		, map: map
 		, title: 'Click Me!'
+        , icon: image
 	});
     
     //automatically loads photo screen with trove content
@@ -671,6 +677,7 @@ function signupComplete(username) {
 
 function showHelp() {
     $("#tuteoverlay").show();
+    $("#mapblocker").show();
 }
 
 function userLogout() {
